@@ -35,10 +35,7 @@ def path(par,cur):
 	return p
 
 def solver(start,end):
-	count = 0
-	memo[start] = count
-	st.append(start)
-	count += 1
+	count = 1
 	q = queue.Queue()
 	q.put(0)
 	parent = []
@@ -66,28 +63,34 @@ def solver(start,end):
 							return path(parent,count)
 						count += 1
 	return []
-	
+
+def PrintPath(x,p):
+	q = st[x]
+	q = q + (end,)
+	mat = [col*['.'] for r in range(row)]
+	L,U = q[len(q)-1]
+	r1,c1 = cell(U)
+	r2,c2 = cell(L)
+	mat[r1][c1] = mat[r2][c2] = 'E'
+	L,U = q[0]
+	r1,c1 = cell(U)
+	r2,c2 = cell(L)
+	mat[r1][c1] = mat[r1][c2] = 'S'
+	for i in range(1,len(q)-1):
+		L,U = q[i]
+		r1,c1 = cell(U)
+		r2,c2 = cell(L)
+		mat[r1][c1] = mat[r2][c2] = '#'
+	visual.display(row,col,mat)
 end = (23,24)
 os.system('clear')
-p = solver(((0,1),(7,8),(16,17),(13,18),(15,20)),end)
+obs = ((0,1),(7,8),(16,17),(13,18),(15,20),(3,4),(5,10))
+memo[obs] = 0
+st.append(obs)
+PrintPath(0,[])
+p = solver(obs,end)
 if p == []:
 	print('No solution')
 else:
 	for x in p:
-		q = st[x]
-		q = q + (end,)
-		mat = [col*['.'] for r in range(row)]
-		L,U = q[len(q)-1]
-		r1,c1 = cell(U)
-		r2,c2 = cell(L)
-		mat[r1][c1] = mat[r2][c2] = 'E'
-		L,U = q[0]
-		r1,c1 = cell(U)
-		r2,c2 = cell(L)
-		mat[r1][c1] = mat[r1][c2] = 'S'
-		for i in range(1,len(q)-1):
-			L,U = q[i]
-			r1,c1 = cell(U)
-			r2,c2 = cell(L)
-			mat[r1][c1] = mat[r2][c2] = '#'
-		visual.display(row,col,mat)
+		PrintPath(x,p)
