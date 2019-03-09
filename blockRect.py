@@ -88,9 +88,11 @@ obs = ((0,1),(7,8),(16,17),(13,18),(15,20),(3,4),(5,10))
 memo[obs] = 0
 st.append(obs)
 PrintPath(0,[])
+print('Solving...')
 p = solver(obs,end)
 if p == []:
 	print('No solution')
 else:
+	os.system('clear')
 	for x in p:
 		PrintPath(x,p)
