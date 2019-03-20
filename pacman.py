@@ -1,6 +1,7 @@
 import os
 import visualPac
 import pacmanBFS
+import escape
 import sys, termios, atexit
 from select import select
 
@@ -35,6 +36,7 @@ def read():
 	n = len(data)
 	ghost = ()
 	pac = ()
+	f = ()
 	for line in data:
 		m = len(line)-1
 		mat.append([])
@@ -47,9 +49,12 @@ def read():
 				ghost += ((i,j),)
 			elif line[j] == '#':
 				mat[i][j] = '#'
+			elif line[j] == 'f':
+				mat[i][j] = 'f'
+				f += ((i,j),)
 			
 		i += 1
-	return (mat,n,m,ghost,pac)
+	return (mat,n,m,ghost,pac,f)
 def valid(i,j,n,m,mat):
 	if i >= 0 and i < n and j >= 0 and j < m:
 		if mat[i][j] != '#':
@@ -57,7 +62,7 @@ def valid(i,j,n,m,mat):
 		return False
 	return False
 
-mat,n,m,ghost,pac = read()
+mat,n,m,ghost,pac,f = read()
 
 if __name__ == '__main__':
     atexit.register(set_normal_term)
@@ -65,6 +70,9 @@ if __name__ == '__main__':
 move = -1
 r,c = pac
 game = True
+time = 10
+delay = 2
+score = 0
 os.system('clear')
 while game:
 	if kbhit():
@@ -90,9 +98,32 @@ while game:
 	for i,j in ghost:
 		mat[i][j] = ' '
 	pac = (r,c)
-	ghost = pacmanBFS.BFS(mat,ghost,n,m,pac)
-	visualPac.display(n,m,mat,pac,ghost)
+	if delay % 2:
+		if time:
+			ghost = escape.esc(mat,pac,n,m,ghost)
+		else:
+			ghost = pacmanBFS.BFS(mat,ghost,n,m,pac)
+	delay = (delay + 1)%2
+	visualPac.display(n,m,mat,pac,ghost,time,f)
+	fg = ()
+	for i,j in f:
+		if (i,j) == pac:
+			time = 40
+		else:
+			fg += ((i,j),)
+	f = fg
+	fg = ()
+	score += 1
 	for i,j in ghost:
 		if (i,j) == pac:
-			print('Game Over')
-			game = False
+			if time == 0:
+				print('Game Over')
+				game = False
+		else:
+			fg += ((i,j),)
+	ghost = fg
+	if len(ghost) == 0:
+		print('You Won')
+		print('Your time = ',score)
+		game = False
+	time = max(0,time-1)

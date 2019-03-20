@@ -6,12 +6,19 @@ NC = '\033[0m'
 WHITE = '\033[47m'
 BLUE = '\033[44m'
 G = '\U0001F608'
+G_ = '\U0001F480'
 P = '\U0001F47D'
-def display(row,col,mat,pac,ghost):
+F = '\U0001F353'
+
+def display(row,col,mat,pac,ghost,time,f):
 	#os.system('clear')
+	if len(f):
+		for i,j in f:
+			mat[i][j] = 'f'
 	mat[pac[0]][pac[1]] = 'p'
 	for i,j in ghost:
-		mat[i][j] = 'g'
+		if (time and (i,j) == (pac[0],pac[1])) == False:
+			mat[i][j] = 'g'
 	d1 = 'tput cup '
 	d2 = ' 30'
 	i = 8
@@ -28,9 +35,14 @@ def display(row,col,mat,pac,ghost):
 				#print(GREEN + '#' + NC),
 			elif(mat[x][y] == 'g'):
 				#s += RED + '  ' + NC
-				s += WHITE + G + NC
-			else :
+				if time:
+					s += WHITE + G_ + NC
+				else:	
+					s += WHITE + G + NC
+			elif(mat[x][y] == 'p') :
 				s += WHITE + P + NC
+			else:
+				s += WHITE + F + NC
 		print(s)
 		i += 1
 	os.system('sleep 0.3')
