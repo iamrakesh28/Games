@@ -5,6 +5,8 @@ GREEN = '\033[42m'
 NC = '\033[0m'
 WHITE = '\033[47m'
 BLUE = '\033[44m'
+G = '\U0001F608'
+P = '\U0001F47D'
 def display(row,col,mat,pac,ghost):
 	#os.system('clear')
 	mat[pac[0]][pac[1]] = 'p'
@@ -25,10 +27,10 @@ def display(row,col,mat,pac,ghost):
 				s += GREEN + '  ' + NC
 				#print(GREEN + '#' + NC),
 			elif(mat[x][y] == 'g'):
-				s += RED + '  ' + NC
-				#print(RED + 'S' + NC),
+				#s += RED + '  ' + NC
+				s += WHITE + G + NC
 			else :
-				s += BLUE + '  ' + NC
+				s += WHITE + P + NC
 		print(s)
 		i += 1
 	os.system('sleep 0.3')
