@@ -119,6 +119,7 @@ while game:
 			if time == 0:
 				print('Game Over')
 				game = False
+				fg += ((i,j),)
 		else:
 			fg += ((i,j),)
 	ghost = fg
