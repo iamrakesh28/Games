@@ -96,7 +96,7 @@ for epi in range(num):
 	os.system('clear')
 	while game:
 		if bot:
-			move = train.Qlearning(pac,pac1,ghost,ghost1,len(f),over,dg,df,time)
+			move = train.Qlearning(pac,pac1,ghost,ghost1,len(forig)-len(f),over,dg,df,time)
 		elif kbhit():
 			ch = getch()	
 			move = action(ch)
