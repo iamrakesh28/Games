@@ -1,5 +1,5 @@
 import numpy as np
-import pacmanBFS
+import pickle
 
 '''
 0 -> up
@@ -10,6 +10,7 @@ import pacmanBFS
 '''
 gamma = 0.9
 t = 0
+ep = 0.3
 def velocity(v2,v1):
 	dv = (v2[0]-v1[0],v2[1],v1[1])
 	if dv[0] != 0:
@@ -30,11 +31,58 @@ def getState(pac,pac1,ghost,ghost1,f):
 
 class env:
 	def __init__(self):
+		fp = open('memo','rb')
+		self.memo = pickle.load(fp)
+		fp.close()
+		fp = open('state','rb')
+		self.state = pickle.load(fp)
+		fp.close()
+		fp = open('cnt','rb')
+		self.cnt = pickle.load(fp)
+		fp.close()
+		fp = open('act','rb')
+		self.act = pickle.load(fp)
+		fp.close()
+		fp = open('Q','rb')
+		self.Q = pickle.load(fp)
+		fp.close()
+	def write(self):
+		fp = open('memo','wb')
+		pickle.dump(self.memo,fp)
+		fp.close()
+		fp = open('state','wb')
+		pickle.dump(self.state,fp)
+		fp.close()
+		fp = open('cnt','wb')
+		pickle.dump(self.cnt,fp)
+		fp.close()
+		fp = open('act','wb')
+		pickle.dump(self.act,fp)
+		fp.close()
+		fp = open('Q','wb')
+		pickle.dump(self.Q,fp)
+		fp.close()
+	def reinit(self):
 		self.memo = {}
+		fp = open('memo','wb')
+		pickle.dump(self.memo,fp)
+		fp.close()
 		self.state = []
+		fp = open('state','wb')
+		pickle.dump(self.state,fp)
+		fp.close()
 		self.cnt = 0
+		fp = open('cnt','wb')
+		pickle.dump(self.cnt,fp)
+		fp.close()
 		self.act = []
+		fp = open('act','wb')
+		pickle.dump(self.act,fp)
+		fp.close()
 		self.Q = []
+		fp = open('Q','wb')
+		pickle.dump(self.Q,fp)
+		fp.close()
 
 E = env()
 A = None
@@ -48,17 +96,23 @@ def reward(g,f,over):
 
 def Qlearning(pac,pac1,ghost,ghost1,f,over):
 	st = getState(pac,pac1,ghost,ghost1,f)
+	global A
+	global t
 	if st not in E.memo:
 		E.memo[st] = E.cnt
 		E.cnt += 1
 		E.act.append(np.random.randint(5)) 
 		E.Q.append([0.0,0.0,0.0,0.0,0.0])
 	s =  E.memo[st]
+	a = None
 	if A != None:
 		alpha = 1.0/(1.0+t)
 		s_,a_ = A
 		E.Q[s_][a_] = (1-alpha)*E.Q[s_][a_] + alpha*(reward(len(ghost),f,over) + gamma*max(E.Q[s]))
-	a = np.argmax(E.Q[s])
+	if np.random.random() < ep :
+		a = np.random.randint(5)
+	else:
+		a = np.argmax(E.Q[s])
 	A = (s,a)
 	t += 1
 	return a
