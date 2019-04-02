@@ -25,7 +25,7 @@ def velocity(v2,v1):
 def getState(pac,pac1,ghost,ghost1,f):
 	st = (pac + (velocity(pac,pac1),),)
 	st += ((f,),)
-	for i in range(len(ghost)):
+	for i in range(min(len(ghost),len(ghost1))):
 		st += (ghost[i] + (velocity(ghost[i],ghost1[i]),),)
 	return st
 
@@ -86,15 +86,19 @@ class env:
 
 E = env()
 A = None
-def reward(g,f,over):
+def reward(g,lg,f,over,time,dg,df):
 	if over == 1:
-		return 500
+		return 1000
 	if over == -1:
-		return -500
-	rew = 25.0/(g+1) + 10.0/(f+1) + 50.0/t
+		return -1000
+	rew = 50.0/t
+	if time:
+		rew += -5*dg + df + 100.0*g
+	else:
+		rew += 5*lg*dg + -5*f*df
 	return rew
 
-def Qlearning(pac,pac1,ghost,ghost1,f,over):
+def Qlearning(pac,pac1,ghost,ghost1,f,over,dg,df,time):
 	st = getState(pac,pac1,ghost,ghost1,f)
 	global A
 	global t
@@ -108,7 +112,7 @@ def Qlearning(pac,pac1,ghost,ghost1,f,over):
 	if A != None:
 		alpha = 1.0/(1.0+t)
 		s_,a_ = A
-		E.Q[s_][a_] = (1-alpha)*E.Q[s_][a_] + alpha*(reward(len(ghost),f,over) + gamma*max(E.Q[s]))
+		E.Q[s_][a_] = (1-alpha)*E.Q[s_][a_] + alpha*(reward(len(ghost)-len(ghost1),len(ghost),f,over,time,dg,df) + gamma*max(E.Q[s]))
 	if np.random.random() < ep :
 		a = np.random.randint(5)
 	else:

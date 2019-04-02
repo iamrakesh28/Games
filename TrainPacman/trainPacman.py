@@ -77,7 +77,9 @@ if __name__ == '__main__':
     atexit.register(set_normal_term)
     set_curses_term()
 bot = 1
-for epi in range(10000):
+num = 5000
+#train.E.reinit()
+for epi in range(num):
 	mat,n,m,ghost,pac,f = read()
 	ghost1 = ghost
 	pac1 = pac
@@ -89,10 +91,12 @@ for epi in range(10000):
 	delay = 2
 	score = 0
 	over = 0
+	df = 5
+	dg = 5
 	os.system('clear')
 	while game:
 		if bot:
-			move = train.Qlearning(pac,pac1,ghost,ghost1,len(f),over)
+			move = train.Qlearning(pac,pac1,ghost,ghost1,len(f),over,dg,df,time)
 		elif kbhit():
 			ch = getch()	
 			move = action(ch)
@@ -115,9 +119,9 @@ for epi in range(10000):
 			if time:
 				ghost1 = escape.esc(mat,pac,n,m,ghost)
 			else:
-				ghost1 = pacmanBFS.BFS(mat,ghost,n,m,pac)
+				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
 		delay = (delay + 1)%2
-		if epi > 9997:
+		if epi > num-3:
 			visualPac.display(n,m,mat,pac,ghost1,time,f)
 		fg = ()
 		for i,j in f:
@@ -131,7 +135,7 @@ for epi in range(10000):
 		for i,j in ghost1:
 			if (i,j) == pac:
 				if time == 0:
-					if epi > 9997:
+					if epi > num-3:
 						print('Game Over')
 					game = False
 					over = -1
@@ -140,10 +144,10 @@ for epi in range(10000):
 				fg += ((i,j),)
 		ghost1 = fg
 		if len(ghost1) == 0:
-			if epi > 9997:
+			if epi > num-3:
 				print('You Won')
 			over = 1
-			if epi > 9997:
+			if epi > num-3:
 				print('Your time = ',score)
 			game = False
 		time = max(0,time-1)

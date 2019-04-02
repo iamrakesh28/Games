@@ -11,8 +11,9 @@ def valid(i,j,n,m):
 		return True
 	return False
 
-def BFS(mat,ghost,n,m,pac):
+def BFS(mat,ghost,n,m,pac,f):
 	visit = [m*[False] for i in range(n)]
+	dist = [m*[0] for i in range(n)]
 	par = [m*[0] for i in range(n)]
 	dr = [-1,1,0,0]
 	dc = [0,0,-1,1]
@@ -30,6 +31,7 @@ def BFS(mat,ghost,n,m,pac):
 		for d in range(4):
 			if valid(dr[d]+r,dc[d]+c,n,m) and visit[dr[d]+r][dc[d]+c] == False:
 				visit[dr[d]+r][dc[d]+c] = True
+				dist[dr[d]+r][dc[d]+c] = dist[r][c] + 1
 				par[dr[d]+r][dc[d]+c] = cellNum(r,c,m)
 				q.put(cellNum(dr[d]+r,dc[d]+c,m))
 	gh = ()
@@ -39,4 +41,10 @@ def BFS(mat,ghost,n,m,pac):
 			gh = gh + ((r,c),)
 		else:
 			gh = gh + ((i,j),)
-	return gh
+	dg = 1e9
+	df = 1e9
+	for r,c in gh:
+		dg = min(dg,dist[r][c])
+	for r,c in f:
+		df = min(dg,dist[r][c])
+	return (gh,dg,df)
