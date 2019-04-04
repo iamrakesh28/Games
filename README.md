@@ -2,15 +2,15 @@ Using Artificial Intelligence algorithms to solve puzzles or games:
 
 1.  Move the Block : 
 
-It is a puzzle game, where the player has to move the red block to blue position. Green blocks are obstacles which may have to be moved to make room for the red block.
-Here, I have build two versions of it.
+	It is a puzzle game, where the player has to move the red block to blue position. Green blocks are obstacles which may have 	    to be moved to make room for the red block.
+	Here, I have build two versions of it.
 
-a. Game has only 1x1 square blocks (Games/Block/)
+	a. Game has only 1x1 square blocks (Games/Block/)
 	The game uses BFS algorithm to solve the puzzle in minimum steps. Each state is a configuration of the board.
 	In terminal, use python block.py to run it.
 	visual.py is used for visualiztion in Linux shell.
 	
-b. Game has only 2x1 and 1x2 blocks (Games/BlockRect/)
+	b. Game has only 2x1 and 1x2 blocks (Games/BlockRect/)
 	The game uses BFS algorithm to solve the puzzle in minimum steps. Each state is a configuration of the board.
 	In terminal, use python blockRect.py to run it.
 	visual.py is a visualization file
