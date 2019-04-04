@@ -77,7 +77,7 @@ if __name__ == '__main__':
     atexit.register(set_normal_term)
     set_curses_term()
 bot = 1
-num = 5000
+num = 100
 #train.E.reinit()
 for epi in range(num):
 	mat,n,m,ghost,pac,f = read()
@@ -96,7 +96,7 @@ for epi in range(num):
 	os.system('clear')
 	while game:
 		if bot:
-			move = train.Qlearning(pac,pac1,ghost,ghost1,len(forig)-len(f),over,dg,df,time)
+			move = train.Qlearning(pac,pac1,ghost,ghost1,len(forig),f,over,dg,df,time)
 		elif kbhit():
 			ch = getch()	
 			move = action(ch)
@@ -117,6 +117,7 @@ for epi in range(num):
 		ghost = ghost1
 		if delay % 2:
 			if time:
+				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
 				ghost1 = escape.esc(mat,pac,n,m,ghost)
 			else:
 				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
