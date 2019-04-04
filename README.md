@@ -1,4 +1,4 @@
-# Using Artificial Intelligence algorithms to solve puzzles or games:
+# Using Artificial Intelligence algorithms to solve puzzles and play games:
 
 ## 1.  Move the Block : 
 
