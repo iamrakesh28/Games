@@ -15,7 +15,7 @@ b. Game has only 2x1 and 1x2 blocks (Games/BlockRect/)
 	visual.py is a visualization file
 
 2.  Pacman (Games/Pacman/):
-	It is a classic game. Here, Ghosts use BFS algorithm to eat Pacman. When Pacman eats a fruit, 		ghosts runs in a direction that maximizes its euclidean distance from the pacman (manhatten 	   		distance would be better).
+	It is a classic game. Here, Ghosts use BFS algorithm to eat Pacman. When Pacman eats a fruit, 		ghosts runs in a 	direction that maximizes its euclidean distance from the pacman (manhatten distance would be better).
 	In terminal, use python3 pacman.py to run it.
 	pacmanBFS.py gives shortest path from ghosts to pacman.
 	escape.py gives the next position of ghosts to maximaize its distance from pacman
@@ -25,6 +25,6 @@ b. Game has only 2x1 and 1x2 blocks (Games/BlockRect/)
 3. GridWorld (Games/QLearning):
 	It is just implementation of Q-Learning to solve GridWorld Problem.
 4. Q-Learning on Pacman (Games/TrainPacman):
-	Here, I have used q-learning to play above pacman game. The board of the game is reduced to 7x9, 		so that the total possible states is about 10^6.
+	Here, I have used q-learning to play above pacman game. The board of the game is reduced to 7x9, 		so that the 	    total possible states is about 10^6.
 	train.py caluates the optimal decision.
 	In terminal, use python3 trainPacman.py to run it. Each time the file is run, the game is trained.
