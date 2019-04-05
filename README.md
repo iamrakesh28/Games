@@ -30,6 +30,6 @@
 ## 4. Q-Learning on Pacman (Games/TrainPacman):
 ######	Here, I have used q-learning to play above pacman game. The board of the game is reduced to 7x9, such that the total possible states is about 10^6.
 	train.py caluates the optimal decision.
-	In terminal, use `python3 trainPacman.py` to run it.
+#####	In terminal, use `python3 trainPacman.py` to run it.
 	Each time the file is run, the game is trained.
 #	![Pacman training](https://github.com/iamrakesh28/Games/blob/master/images/trainPacman.png)
