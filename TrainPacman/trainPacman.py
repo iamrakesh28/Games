@@ -159,7 +159,7 @@ for epi in range(num):
 		ghost = ghost1
 		ghost1,time,game,over = eat(pac,time,ghost1)
 		if game == False:
-			if epi > num-4:
+			if epi > num-5:
 				visualPac.display(n,m,mat,pac,ghost1,time,f)
 				lose(over,score)
 			break
@@ -171,7 +171,7 @@ for epi in range(num):
 				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
 		delay = (delay + 1)%2
 		ghost1,time,game,over = eat(pac,time,ghost1)
-		if epi > num-4:
+		if epi > num-5:
 			visualPac.display(n,m,mat,pac,ghost1,time,f)
 			lose(over,score)
 		
