@@ -56,12 +56,47 @@ def read():
 			
 		i += 1
 	return (mat,n,m,ghost,pac,f)
+
+def eat(pac,time,ghost1):
+	global f	
+	fg = ()
+	game = True
+	over = 0
+	for i,j in f:
+		if (i,j) == pac:
+			time = 40
+		else:
+			fg += ((i,j),)
+	f = fg
+	fg = ()
+	for i,j in ghost1:
+		if (i,j) == pac:
+			if time == 0:
+				game = False
+				over = -1
+				fg += ((i,j),)
+		else:
+			fg += ((i,j),)
+	ghost1 = fg
+	if len(ghost1) == 0:
+		over = 1
+		game = False
+	return (ghost1,time,game,over)
+
 def valid(i,j,n,m,mat):
 	if i >= 0 and i < n and j >= 0 and j < m:
 		if mat[i][j] != '#':
 			return True
 		return False
 	return False
+
+def lose(win,score):
+	if win == 1 : 
+		print('You Won')
+		print('Your time = ',score)
+	elif win == -1:
+		print('Game Over')
+
 def action(ch):
 	move = None
 	if ch == '\x1b[D' and valid(pac[0],pac[1]-1,n,m,mat):
@@ -76,8 +111,15 @@ def action(ch):
 if __name__ == '__main__':
     atexit.register(set_normal_term)
     set_curses_term()
-bot = 1
-num = 100
+print('Who will play ?\n0. You\n1. Bot')
+os.system('sleep 0.5')
+if kbhit():
+	bot = getch()
+else:
+	bot = 1
+	print('Bot will play')	
+	os.system('sleep 1')
+num = 10
 #train.E.reinit()
 for epi in range(num):
 	mat,n,m,ghost,pac,f = read()
@@ -115,6 +157,12 @@ for epi in range(num):
 		pac1 = pac
 		pac = (r,c)
 		ghost = ghost1
+		ghost1,time,game,over = eat(pac,time,ghost1)
+		if game == False:
+			if epi > num-4:
+				visualPac.display(n,m,mat,pac,ghost1,time,f)
+				lose(over,score)
+			break
 		if delay % 2:
 			if time:
 				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
@@ -122,37 +170,14 @@ for epi in range(num):
 			else:
 				ghost1,dg,df = pacmanBFS.BFS(mat,ghost,n,m,pac,f)
 		delay = (delay + 1)%2
-		if epi > num-3:
+		ghost1,time,game,over = eat(pac,time,ghost1)
+		if epi > num-4:
 			visualPac.display(n,m,mat,pac,ghost1,time,f)
-		fg = ()
-		for i,j in f:
-			if (i,j) == pac:
-				time = 40
-			else:
-				fg += ((i,j),)
-		f = fg
-		fg = ()
-		score += 1
-		for i,j in ghost1:
-			if (i,j) == pac:
-				if time == 0:
-					if epi > num-3:
-						print('Game Over')
-					game = False
-					over = -1
-					fg += ((i,j),)
-			else:
-				fg += ((i,j),)
-		ghost1 = fg
-		if len(ghost1) == 0:
-			if epi > num-3:
-				print('You Won')
-			over = 1
-			if epi > num-3:
-				print('Your time = ',score)
-			game = False
+			lose(over,score)
+		
 		time = max(0,time-1)
+		score += 1
 		if len(f) == 0:
 			f = forig
-
+	move = train.Qlearning(pac,pac1,ghost,ghost1,len(forig),f,over,dg,df,time)
 train.E.write()	

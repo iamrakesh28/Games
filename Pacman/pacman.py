@@ -55,6 +55,7 @@ def read():
 			
 		i += 1
 	return (mat,n,m,ghost,pac,f)
+
 def valid(i,j,n,m,mat):
 	if i >= 0 and i < n and j >= 0 and j < m:
 		if mat[i][j] != '#':
@@ -63,6 +64,40 @@ def valid(i,j,n,m,mat):
 	return False
 
 mat,n,m,ghost,pac,f = read()
+
+def eat(pac,time):
+	global ghost
+	global f
+	fg = ()
+	win = 0
+	game = True
+	for i,j in f:
+		if (i,j) == pac:
+			time = 40
+		else:
+			fg += ((i,j),)
+	f = fg
+	fg = ()
+	for i,j in ghost:
+		if (i,j) == pac:
+			if time == 0:
+				win = -1
+				game = False
+				fg += ((i,j),)
+		else:
+			fg += ((i,j),)
+	ghost = fg
+	if len(ghost) == 0:
+		win = 1
+		game = False
+	return (game,time,win)
+
+def lose(win,score):
+	if win == 1 : 
+		print('You Won')
+		print('Your time = ',score)
+	elif win == -1:
+		print('Game Over')
 
 if __name__ == '__main__':
     atexit.register(set_normal_term)
@@ -98,6 +133,11 @@ while game:
 	for i,j in ghost:
 		mat[i][j] = ' '
 	pac = (r,c)
+	game,time,win = eat(pac,time)
+	if game == False:
+		visualPac.display(n,m,mat,pac,ghost,time,f)
+		lose(win,score)
+		break
 	if delay % 2:
 		if time:
 			ghost = escape.esc(mat,pac,n,m,ghost)
@@ -105,26 +145,7 @@ while game:
 			ghost = pacmanBFS.BFS(mat,ghost,n,m,pac)
 	delay = (delay + 1)%2
 	visualPac.display(n,m,mat,pac,ghost,time,f)
-	fg = ()
-	for i,j in f:
-		if (i,j) == pac:
-			time = 40
-		else:
-			fg += ((i,j),)
-	f = fg
-	fg = ()
+	game,time,win = eat(pac,time)
+	lose(win,score)
 	score += 1
-	for i,j in ghost:
-		if (i,j) == pac:
-			if time == 0:
-				print('Game Over')
-				game = False
-				fg += ((i,j),)
-		else:
-			fg += ((i,j),)
-	ghost = fg
-	if len(ghost) == 0:
-		print('You Won')
-		print('Your time = ',score)
-		game = False
 	time = max(0,time-1)

@@ -96,13 +96,14 @@ def reward(g,lg,f,over,time,dg,df):
 		return 10000
 	if over == -1:
 		return -10000
+	
 	rew = 50.0/t
-	inv = max(0.5,abs(2+dg))
+	inv = max(0.5,abs(2-dg))
 	if time:
-		rew += -100.0*lg*inv + df + 1000.0*g
+		rew += -100.0*lg*dg + df + 500.0*g
 	else:
-		rew += 100.0*lg*inv + 500.0*f - 100.0*df
-	return rew
+		rew += 100.0*lg*inv + 200.0*f - 100.0*df
+	return 0
 
 def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
 	st = getState(pac,pac1,ghost,ghost1,f,time)
