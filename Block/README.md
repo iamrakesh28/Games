@@ -8,5 +8,5 @@
 	    visual.py is a visualization file
 #	![Block Game](https://github.com/iamrakesh28/Games/blob/master/images/block.png)
 
-##### There is a tuple named 'obs' in line number 106 of blockRect.py file. Each element of the tuple is the position of a block. First element is the position of Red block and last element is the goal position (Blue). Rest all are obstacles. (i,j) -> i*col + j, where i,j starts from 0.
-##### To change the input configuration, change the values of the tuple 'obs'. For example, if you want to place the Red block in (2,2), then set obs[0] = (2 * row + 2)
+###### There is a tuple named 'obs' in line number 106 of blockRect.py file. Each element of the tuple is the position of a block. First element is the position of Red block and last element is the goal position (Blue). Rest all are obstacles. (i,j) -> i*col + j, where i,j starts from 0.
+###### To change the input configuration, change the values of the tuple 'obs'. For example, if you want to place the Red block in (2,2), then set obs[0] = (2 * row + 2)
