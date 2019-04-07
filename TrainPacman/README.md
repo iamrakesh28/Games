@@ -11,6 +11,8 @@
     b. Number of fruits and change in fruit number
     c. Who is chasing whom
     d. Minimum distance of fruit and ghost from pacman
+    e. The game is over or not. If over, then is it a lose or win
+###### Reward function is based on these inputs.
 ###### All these data is stored as a state. States are stored in python dicitionary. 
 ##### 5. visualPac.py
 ######  It takes board matrix, ghosts, fruits and pacman positions as input and displays in the shell.
