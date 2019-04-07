@@ -129,7 +129,7 @@ for epi in range(num):
 	move = -1
 	r,c = pac
 	game = True
-	time = 10
+	time = 0
 	delay = 2
 	score = 0
 	over = 0

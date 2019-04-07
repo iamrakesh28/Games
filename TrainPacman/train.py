@@ -10,7 +10,7 @@ import pickle
 '''
 gamma = 0.9
 t = 0
-ep = 0.2
+ep = 0.1
 def velocity(v2,v1):
 	dv = (v2[0]-v1[0],v2[1],v1[1])
 	if dv[0] != 0:
