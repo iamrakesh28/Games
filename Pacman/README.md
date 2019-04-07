@@ -10,4 +10,5 @@
 ######  It takes board matrix, ghosts, fruits and pacman positions as input and displays in the shell.
 ##### 6. pacman.py
 ######  It is the main file. It takes board input from the pacmanMatrix.txt file. Displays the board using visualPac.py. Takes the input from the user. Gets the next position of ghosts from escape.py or pacmanBFS.py files.
+#	![Pacman1](https://github.com/iamrakesh28/Games/blob/master/images/pacman1.png)
 ##### To play the game, use `python3 pacman.py` in shell.
