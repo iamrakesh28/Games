@@ -8,5 +8,5 @@
 	    visual.py is a visualization file
 #	![BlockRect Game](https://github.com/iamrakesh28/Games/blob/master/images/blockRect.png)
 
-##### There is a tuple named 'obs' in line number 86 of blockRect.py file. Each element of the tuple is a tuple of pair. First element is the position of Red block and last element is the goal position (Blue). Rest all are obstacles. The first element (obs[i][0]) gives the position of one side of any block and second element (obs[i][1]) gives the ending position. (i,j) -> i*col + j, where i,j starts from 0.
+##### There is a tuple named 'obs' in line number 87 of blockRect.py file. Each element of the tuple is a tuple of pair. First element is the position of Red block and last element is the goal position (Blue). Rest all are obstacles. The first element (obs[i][0]) gives the position of one side of any block and second element (obs[i][1]) gives the ending position. (i,j) -> i*col + j, where i,j starts from 0.
 ##### To change the input configuration, change the values of the tuple 'obs'. For example, if you want to place the Red block first end in (2,2) and second end in (2,3), then set obs[0] = (2 * row + 2, 2 * row + 3)
