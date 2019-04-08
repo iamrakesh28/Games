@@ -17,6 +17,6 @@
 ##### 5. visualPac.py
 ######  It takes board matrix, ghosts, fruits and pacman positions as input and displays in the shell.
 ##### 6. trainPacman.py
-######  It is the main file. It takes board input from the pacmanMatrix.txt file. Displays the board using visualPac.py. Takes the input from the user or bot about its action. Gets the next position of ghosts from escape.py or pacmanBFS.py files. Gives the required inputs to the train.py file. train.py takes the optimal action (when the bot is playing) and send it back to trainPacman.py. Each time the file is run, it takes the previously learned Q-values, actions, states, etc from Q, action, memo, state, etc. files. Each time the game is played, it learns and stores in these files.
+######  It is the main file. It takes board input from the pacmanMatrix.txt file. Displays the board using visualPac.py. Takes the input from the user or bot about its action. Gets the next position of ghosts from escape.py or pacmanBFS.py files. Gives the required inputs to the train.py file. train.py takes the optimal action (when the bot is playing) and send it back to trainPacman.py. Each time the file is run, it takes the previously learned Q-values, actions, states, etc from Q, action, memo, state, etc. files. Each time the game is played, it learns and stores the values in these files.
 #	![Pacman training](https://github.com/iamrakesh28/Games/blob/master/images/trainPacman.png)
 ##### To run the game, use `python3 trainPacman.py` in shell.
