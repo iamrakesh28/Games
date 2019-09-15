@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pacmanBFS
 import escape
 import pygame
@@ -18,6 +20,7 @@ class Game :
 		self.win = False
 		self.pac = ()
 		self.fruit = ()
+		self.fruitOrg = ()
 		i = 0
 		for line in data:
 			self.col = len(line) - 1
@@ -32,9 +35,10 @@ class Game :
 				elif line[j] == '#':
 					self.matrix[i][j] = '#'
 				elif line[j] == 'f':
-					self.matrix[i][j] = 'f'
+					#self.matrix[i][j] = 'f'
 					self.fruit += ((i,j),)
 			i += 1
+		self.fruitOrg = self.fruit
 
 	def display(self):
 		s = ''
@@ -129,7 +133,25 @@ class window:
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['cold_ghost'] = image
 
-	def display(self, matrix, time, direct, even, pac, ghost):
+		# Game Over
+		image = pygame.image.load('game_over.jpg')
+		#image = pygame.transform.scale(image, (block_size, block_size))
+		self.store['game_over'] = image
+		
+		# Win
+		image = pygame.image.load('win.jpg')
+		#image = pygame.transform.scale(image, (block_size, block_size))
+		self.store['win'] = image
+
+		# start screen
+		image = pygame.image.load('pacman.jpeg')
+		image = pygame.transform.scale(image, (col * block_size, row * block_size))
+		self.store['start'] = image
+
+
+
+
+	def display(self, matrix, time, direct, even, pac, ghost, fruit):
 		self.screen.fill(self.background)
 		row = len(matrix)
 		col = len(matrix[0])
@@ -139,9 +161,13 @@ class window:
 					continue
 				if matrix[i][j] == '#':
 					self.screen.blit(self.store['block'], (block_size * j, block_size * i))
-				else :
-					self.screen.blit(self.store['fruit'], (block_size * j, block_size * i))
+				#else :
+				#	self.screen.blit(self.store['fruit'], (block_size * j, block_size * i))
 		
+
+		for i, j in fruit:
+			coord = (block_size * j, block_size * i)
+			self.screen.blit(self.store['fruit'], coord)
 		# Ghost and Pacman
 		coord = (block_size * pac[1], block_size * pac[0])
 		if direct == 0:
@@ -161,6 +187,7 @@ class window:
 			else:
 				self.screen.blit(self.store['red_ghost'], coord)
 
+
 '''
 	move = 0 -> up
 	move = 1 -> down
@@ -178,6 +205,10 @@ def main() :
 	delay = 2
 	r, c = G.pac
 	even = 0
+	Win.screen.blit(Win.store['start'], (0, 0))
+	pygame.display.flip()
+	Win.clock.tick(0.5)
+
 	while game:
 		#Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost)
 		for event in pygame.event.get():
@@ -210,7 +241,7 @@ def main() :
 		G.pac = (r, c)
 		G.eat()
 		if G.over == True:
-			Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost)
+			Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost, G.fruit)
 			break
 		
 		if delay % 2:
@@ -221,15 +252,24 @@ def main() :
 		
 		delay = (delay + 1) % 2
 		even = (even + 1) % 2
-		Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost)
+		Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost, G.fruit)
 		G.eat()
 		if G.over == True:
-			Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost)
+			Win.display(G.matrix, G.time, direct, even, G.pac, G.ghost, G.fruit)
 			break
+		if len(G.fruit) == 0:
+			G.fruit = G.fruitOrg
 		G.score += 1
 		G.time = max(0,G.time - 1)
 		Win.clock.tick(6)
 		pygame.display.flip()
+
+	if G.win == False:
+		Win.screen.blit(Win.store['game_over'], ((G.col // 2 - 2) * block_size, (G.row // 2 - 1) * block_size))
+	else:
+		Win.screen.blit(Win.store['win'], ((G.col // 2 - 2) * block_size, (G.row // 2 - 1) * block_size))
+	pygame.display.flip()
+	Win.clock.tick(1)
 	
 
 if __name__ == '__main__':

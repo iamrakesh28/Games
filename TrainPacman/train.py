@@ -9,7 +9,6 @@ import pickle
 4 -> still
 '''
 gamma = 0.9
-t = 0
 ep = 0.1
 def velocity(v2,v1):
 	dv = (v2[0]-v1[0],v2[1],v1[1])
@@ -50,6 +49,9 @@ class env:
 		fp = open('Q','rb')
 		self.Q = pickle.load(fp)
 		fp.close()
+		fp = open('t','rb')
+		self.t = pickle.load(fp)
+		fp.close()
 	def write(self):
 		fp = open('memo','wb')
 		pickle.dump(self.memo,fp)
@@ -65,6 +67,9 @@ class env:
 		fp.close()
 		fp = open('Q','wb')
 		pickle.dump(self.Q,fp)
+		fp.close()
+		fp = open('t','wb')
+		pickle.dump(self.t,fp)
 		fp.close()
 	def reinit(self):
 		self.memo = {}
@@ -87,6 +92,10 @@ class env:
 		fp = open('Q','wb')
 		pickle.dump(self.Q,fp)
 		fp.close()
+		self.t = 0
+		fp = open('t','wb')
+		pickle.dump(self.t,fp)
+		fp.close()
 
 E = env()
 A = None
@@ -96,7 +105,7 @@ def reward(g,lg,f,over,time,dg,df):
 		return 10000
 	if over == -1:
 		return -10000
-	
+	t = E.t
 	rew = 500.0/t
 	inv = max(0.5,abs(2-dg))
 	if time:
@@ -108,7 +117,6 @@ def reward(g,lg,f,over,time,dg,df):
 def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
 	st = getState(pac,pac1,ghost,ghost1,f,time)
 	global A
-	global t
 	global r
 	if st not in E.memo:
 		E.memo[st] = E.cnt
@@ -117,6 +125,7 @@ def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
 		E.Q.append([0.0,0.0,0.0,0.0])
 	s =  E.memo[st]
 	a = None
+	t = E.t
 	if A != None:
 		alpha = 1.0/(1.0+t)
 		s_,a_ = A
@@ -126,7 +135,7 @@ def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
 	else:
 		a = np.argmax(E.Q[s])
 	A = (s,a)
-	t += 1
+	E.t += 1
 	r = reward(len(ghost)-len(ghost1),len(ghost),lf-len(f),over,time,dg,df)
 	return a
 

@@ -9,7 +9,6 @@ import pickle
 4 -> still
 '''
 gamma = 0.9
-t = 0
 ep = 0.2
 def velocity(v2,v1):
 	dv = (v2[0]-v1[0],v2[1],v1[1])
@@ -50,6 +49,12 @@ class env:
 		fp = open('Q','rb')
 		self.Q = pickle.load(fp)
 		fp.close()
+		fp = open('time','rb')
+		self.t = pickle.load(fp)
+		fp.close()
+		fp = open('Nt','rb')
+		self.Nt = pickle.load(fp)
+		fp.close()
 	def write(self):
 		fp = open('memo','wb')
 		pickle.dump(self.memo,fp)
@@ -65,6 +70,12 @@ class env:
 		fp.close()
 		fp = open('Q','wb')
 		pickle.dump(self.Q,fp)
+		fp.close()
+		fp = open('time','wb')
+		pickle.dump(self.t,fp)
+		fp.close()
+		fp = open('Nt','wb')
+		pickle.dump(self.Nt,fp)
 		fp.close()
 	def reinit(self):
 		self.memo = {}
@@ -87,16 +98,27 @@ class env:
 		fp = open('Q','wb')
 		pickle.dump(self.Q,fp)
 		fp.close()
+		self.t = 0
+		fp = open('time','wb')
+		pickle.dump(self.t,fp)
+		fp.close()
+		self.Nt = []
+		fp = open('Nt','wb')
+		pickle.dump(self.Nt,fp)
+		fp.close()
 
 E = env()
 A = None
 r = None
+
+def exploit(n, t):
+	return np.sqrt(2.0 * np.log(t) / n)
 def reward(g,lg,f,over,time,dg,df):
 	if over == 1:
 		return 10000
 	if over == -1:
 		return -10000
-	
+	t = E.t
 	rew = 50.0/t
 	inv = max(0.5,abs(2-dg))
 	if time:
@@ -108,25 +130,27 @@ def reward(g,lg,f,over,time,dg,df):
 def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
 	st = getState(pac,pac1,ghost,ghost1,f,time)
 	global A
-	global t
 	global r
 	if st not in E.memo:
 		E.memo[st] = E.cnt
 		E.cnt += 1
 		E.act.append(np.random.randint(4)) 
 		E.Q.append([0.0,0.0,0.0,0.0])
+		E.Nt.append([0,0,0,0])
 	s =  E.memo[st]
 	a = None
+	t = E.t
 	if A != None:
 		alpha = 1.0/(1.0+t)
 		s_,a_ = A
-		E.Q[s_][a_] = (1-alpha)*E.Q[s_][a_] + alpha*(r + gamma*max(E.Q[s]))
-	if np.random.random() < ep and E.cnt < 10000 :
-		a = np.random.randint(4)
-	else:
-		a = np.argmax(E.Q[s])
+		E.Q[s_][a_] = (1-alpha)*E.Q[s_][a_] + alpha*(r + gamma*max(E.Q[s])) + exploit(E.Nt[s_][a_], t)
+		for i in range(4):
+			if i != a_ :
+				E.Q[s_][i] += exploit(E.Nt[s_][i],t)
+	a = np.argmax(E.Q[s])
+	E.Nt[s][a] += 1
 	A = (s,a)
-	t += 1
+	E.t += 1
 	r = reward(len(ghost)-len(ghost1),len(ghost),lf-len(f),over,time,dg,df)
 	return a
 
