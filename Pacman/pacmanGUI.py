@@ -182,7 +182,7 @@ class window:
 				self.screen.blit(self.store['pac_right2'], coord)
 		for i, j in ghost:
 			coord = (block_size * j, block_size * i)
-			if time:
+			if time > 8 or time % 2:
 				self.screen.blit(self.store['cold_ghost'], coord)
 			else:
 				self.screen.blit(self.store['red_ghost'], coord)
