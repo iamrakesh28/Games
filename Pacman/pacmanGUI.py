@@ -246,7 +246,7 @@ def main() :
 		
 		if delay % 2:
 			if G.time:
-				G.ghost = escape.esc(G.matrix, G.pac, G.row, G.col, G.ghost)
+				G.ghost = escape.BFS(G.matrix, G.ghost, G.row, G.col, G.pac)
 			else:
 				G.ghost = pacmanBFS.BFS(G.matrix, G.ghost, G.row, G.col, G.pac)
 		
