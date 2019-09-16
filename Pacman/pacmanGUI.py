@@ -100,51 +100,51 @@ class window:
 		self.store = {}
 
 		# Left Pacman
-		image = pygame.image.load('pac.jpg')
+		image = pygame.image.load('Images/pac.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['pac_left1'] = image
-		image = pygame.image.load('pac1.jpg')
+		image = pygame.image.load('Images/pac1.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['pac_left2'] = image
 
 		# Right Pacman
-		image = pygame.image.load('pac_right.jpg')
+		image = pygame.image.load('Images/pac_right.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['pac_right1'] = image
-		image = pygame.image.load('pac1_right.jpg')
+		image = pygame.image.load('Images/pac1_right.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['pac_right2'] = image
 		
 		# Fruit
-		image = pygame.image.load('fruit.jpg')
+		image = pygame.image.load('Images/fruit.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['fruit'] = image
 
 		# Obstacle
-		image = pygame.image.load('block.jpg')
+		image = pygame.image.load('Images/block.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['block'] = image
 		
 		# Ghost
-		image = pygame.image.load('red_ghost.jpg')
+		image = pygame.image.load('Images/red_ghost.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['red_ghost'] = image
-		image = pygame.image.load('cold_ghost.jpg')
+		image = pygame.image.load('Images/cold_ghost.jpg')
 		image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['cold_ghost'] = image
 
 		# Game Over
-		image = pygame.image.load('game_over.jpg')
+		image = pygame.image.load('Images/game_over.jpg')
 		#image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['game_over'] = image
 		
 		# Win
-		image = pygame.image.load('win.jpg')
+		image = pygame.image.load('Images/win.jpg')
 		#image = pygame.transform.scale(image, (block_size, block_size))
 		self.store['win'] = image
 
 		# start screen
-		image = pygame.image.load('pacman.jpeg')
+		image = pygame.image.load('Images/pacman.jpeg')
 		image = pygame.transform.scale(image, (col * block_size, row * block_size))
 		self.store['start'] = image
 
