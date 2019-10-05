@@ -120,7 +120,7 @@ else:
 	bot = 1
 	print('Bot will play')	
 	os.system('sleep 1')
-num = 100
+num = 20
 #train.E.reinit()
 for epi in range(num):
 	mat,n,m,ghost,pac,f = read()
@@ -136,6 +136,7 @@ for epi in range(num):
 	over = 0
 	df = 5
 	dg = 5
+	train.E.t = 0
 	os.system('clear')
 	while game:
 		if bot:

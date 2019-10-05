@@ -105,6 +105,7 @@ def reward(g,lg,f,over,time,dg,df):
 		return 10000
 	if over == -1:
 		return -10000
+	'''	
 	t = E.t
 	rew = 500.0/t
 	inv = max(0.5,abs(2-dg))
@@ -112,6 +113,7 @@ def reward(g,lg,f,over,time,dg,df):
 		rew += -100.0*lg*dg + df + 500.0*g
 	else:
 		rew += 100.0*lg*inv + 200.0*f - 100.0*df
+	'''
 	return 0
 
 def Qlearning(pac,pac1,ghost,ghost1,lf,f,over,dg,df,time):
